@@ -36,23 +36,6 @@ fun CameraScreen(navController: NavController) {
         permissionState.value = isGranted
     }
 
-    LaunchedEffect(Unit) {
-        if (ContextCompat.checkSelfPermission(
-                context,
-                Manifest.permission.CAMERA
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            permissionLauncher.launch(Manifest.permission.CAMERA)
-        } else {
-            permissionState.value = true
-        }
-    }
-
-    if (permissionState.value) {
-        CameraPreview()
-    } else {
-        Text("카메라 권한이 필요합니다.", Modifier.fillMaxSize(), textAlign = TextAlign.Center)
-    }
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         floatingActionButton = {
@@ -65,6 +48,22 @@ fun CameraScreen(navController: NavController) {
         },
         floatingActionButtonPosition = FabPosition.Center, // FAB를 중앙에 정렬
     ) { innerpadding ->
+        LaunchedEffect(Unit) {
+            if (ContextCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.CAMERA
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                permissionLauncher.launch(Manifest.permission.CAMERA)
+            } else {
+                permissionState.value = true
+            }
+        }
 
+        if (permissionState.value) {
+            CameraPreview()
+        } else {
+            Text("카메라 권한이 필요합니다.", Modifier.fillMaxSize(), textAlign = TextAlign.Center)
+        }
     }
 }
