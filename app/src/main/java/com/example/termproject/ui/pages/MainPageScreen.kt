@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Add
@@ -41,11 +42,9 @@ fun MainPageScreen(navController: NavController) {
         modifier = Modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
-                title = {
-                    Text(text = "Main page")
-                },
+                title = { Text(text = "MainPage") },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.background// 원하는 색으로 변경
+                    containerColor = MaterialTheme.colorScheme.background
                 )
             )
         },
@@ -57,40 +56,69 @@ fun MainPageScreen(navController: NavController) {
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(16.dp),
-                        horizontalArrangement =  Arrangement.SpaceEvenly,
-
-                        ) {
+                        horizontalArrangement = Arrangement.SpaceEvenly
+                    ) {
                         IconButton(onClick = { navController.navigate("calendar") }) {
-                            Icon(imageVector =  ImageVector.vectorResource(id = R.drawable.baseline_calendar_month_24), contentDescription = "")
+                            Icon(
+                                imageVector = ImageVector.vectorResource(id = R.drawable.baseline_calendar_month_24),
+                                contentDescription = "캘린더로 이동"
+                            )
                         }
-                        IconButton(onClick = {  }) {
-                            Icon(Icons.Default.Home, contentDescription = "")
+                        IconButton(onClick = { }) {
+                            Icon(Icons.Default.Home, contentDescription = "홈으로 이동")
                         }
                         IconButton(onClick = { navController.navigate("stats") }) {
-                            Icon(Icons.Default.Info, contentDescription = "")
+                            Icon(Icons.Default.Info, contentDescription = "통계 보기")
                         }
                     }
                 }
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = {navController.navigate("selectProduct")}) {
-                Icon(imageVector = Icons.Default.Add, contentDescription = "Add")
+            FloatingActionButton(onClick = { navController.navigate("selectProduct") }) {
+                Icon(imageVector = Icons.Default.Add, contentDescription = "새 항목 추가")
             }
         }
-    ) { innerpadding ->
-        Column (
+    ) { innerPadding ->
+        Column(
             modifier = Modifier
-                .padding(innerpadding)
-                .fillMaxWidth()
+                .padding(innerPadding)
+                .fillMaxSize()
                 .padding(16.dp)
-        ){
-            OutlinedCard(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp)
-            ){
-                Text(text = "대충 통계")
+        ) {
+            Text(
+                text = "Today's stats",
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier.padding(8.dp)
+            )
+            LazyColumn(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                item {
+                    OutlinedCard(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp)
+                    ) {
+                        Column(modifier = Modifier.padding(16.dp)) {
+                            Text(text = "Calories consumed today", style = MaterialTheme.typography.bodyLarge)
+                            Text(text = "1200 kcal", style = MaterialTheme.typography.bodyMedium)
+                        }
+                    }
+                }
+                item {
+                    OutlinedCard(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp)
+                    ) {
+                        Column(modifier = Modifier.padding(16.dp)) {
+                            Text(text = "Average weekly calorie intake", style = MaterialTheme.typography.bodyLarge)
+                            Text(text = "1800 kcal", style = MaterialTheme.typography.bodyMedium)
+                        }
+                    }
+                }
+                // 다른 통계 추가 가능
             }
         }
     }
